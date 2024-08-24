@@ -1,15 +1,20 @@
 import { useState } from "react";
 
 const AddCourseInstance = ({ addInstance }) => {
+  const courses = ["AI", "ML", "cloud"];
   const [newInstance, setNewInstance] = useState({
     courseId: "",
     year: "",
     semester: "",
   });
 
+  const semesters = ["Fall", "Spring", "Summer"];
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewInstance({ ...newInstance, [name]: value });
+    setNewInstance((prevInstance) => ({
+      ...prevInstance,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -23,39 +28,53 @@ const AddCourseInstance = ({ addInstance }) => {
   };
 
   return (
-    <div className="mb-4">
+    <form onSubmit={handleSubmit} className="mb-4">
       <div className="form-group d-flex">
         <select
-          className="form-control mr-2"
+          name="courseId"
+          className="form-control"
           value={newInstance.courseId}
           onChange={handleInputChange}
+          required
         >
-          <option value="">Select course</option>
-          {/* Populate with course options */}
+          <option value="">Select a course</option>
+          {courses.map((course, index) => (
+            <option key={index} value={course.id}>
+              {course.title} ({course.courseCode})
+            </option>
+          ))}
         </select>
         <button className="btn btn-secondary">Refresh</button>
       </div>
       <div className="form-group mt-2">
         <input
-          type="text"
-          className="form-control mb-2"
-          placeholder="Year"
+          type="number"
+          name="year"
+          className="form-control"
           value={newInstance.year}
           onChange={handleInputChange}
+          required
         />
+
         <select
-          className="form-control mb-2"
+          name="semester"
+          className="form-control"
           value={newInstance.semester}
           onChange={handleInputChange}
+          required
         >
-          <option value="">Select semester</option>
-          {/* Populate with semester options */}
+          <option value="">Select a semester</option>
+          {semesters.map((semester, index) => (
+            <option key={index} value={semester}>
+              {semester}
+            </option>
+          ))}
         </select>
       </div>
       <button className="btn btn-primary" onClick={addInstance}>
         Add instance
       </button>
-    </div>
+    </form>
   );
 };
 

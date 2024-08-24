@@ -25,24 +25,24 @@ const AddCourse = ({ addCourse }) => {
     <form onSubmit={handleSubmit} className="mb-4">
       <div className="form-group">
         <input
-          type="text"
+          name="courseTitle"
           className="form-control mb-2"
           placeholder="Course title"
-          value={newCourse.title}
+          // value={newCourse.title}
           onChange={handleInputChange}
         />
         <input
-          type="text"
+          name="courseCode"
           className="form-control mb-2"
           placeholder="Course code"
-          value={newCourse.courseCode}
+          // value={newCourse.courseCode}
           onChange={handleInputChange}
         />
         <input
-          type="text"
+          name="courseDescription"
           className="form-control mb-2"
           placeholder="Course description"
-          value={newCourse.description}
+          // value={newCourse.description}
           onChange={handleInputChange}
         />
         <button type="submit" onClick={addCourse} className="btn btn-primary">

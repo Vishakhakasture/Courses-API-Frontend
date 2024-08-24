@@ -11,30 +11,34 @@ function App() {
   const [courses, setCourses] = useState([]);
   const [instances, setInstances] = useState([]);
 
-  const fetchCourses = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/courses");
-      const data = await response.json();
-      setCourses(data);
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-    }
-  };
+  // useEffect(() => {
+  //   const fetchCourses = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/api/courses");
+  //       if (!response.ok) throw new Error("Network response was not ok");
+  //       const data = await response.json();
+  //       setCourses(data || []);
+  //     } catch (error) {
+  //       console.error("Error fetching courses:", error);
+  //     }
+  //   };
 
-  const fetchInstances = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/instances");
-      const data = await response.json();
-      setInstances(data);
-    } catch (error) {
-      console.error("Error fetching instances:", error);
-    }
-  };
+  //   fetchCourses();
+  // }, []);
+  // useEffect(() => {
+  //   const fetchInstances = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/api/courses");
+  //       if (!response.ok) throw new Error("Network response was not ok");
+  //       const data = await response.json();
+  //       setCourses(data || []);
+  //     } catch (error) {
+  //       console.error("Error fetching courses:", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    fetchCourses();
-    fetchInstances();
-  }, []);
+  //   fetchInstances();
+  // }, []);
 
   const addCourse = async (course) => {
     try {
