@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const AddCourseInstance = () => {
-  const [course, setCourse] = useState("");
-  const [year, setYear] = useState("");
-  const [semester, setSemester] = useState("");
+const AddCourseInstance = ({ addInstance }) => {
+  const [newInstance, setNewInstance] = useState({
+    courseId: "",
+    year: "",
+    semester: "",
+  });
 
-  const handleAddInstance = () => {
-    // Add instance logic
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewInstance({ ...newInstance, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addInstance(newInstance);
+    setNewInstance({
+      courseId: "",
+      year: "",
+      semester: "",
+    });
   };
 
   return (
@@ -14,8 +27,8 @@ const AddCourseInstance = () => {
       <div className="form-group d-flex">
         <select
           className="form-control mr-2"
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
+          value={newInstance.courseId}
+          onChange={handleInputChange}
         >
           <option value="">Select course</option>
           {/* Populate with course options */}
@@ -27,19 +40,19 @@ const AddCourseInstance = () => {
           type="text"
           className="form-control mb-2"
           placeholder="Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
+          value={newInstance.year}
+          onChange={handleInputChange}
         />
         <select
           className="form-control mb-2"
-          value={semester}
-          onChange={(e) => setSemester(e.target.value)}
+          value={newInstance.semester}
+          onChange={handleInputChange}
         >
           <option value="">Select semester</option>
           {/* Populate with semester options */}
         </select>
       </div>
-      <button className="btn btn-primary" onClick={handleAddInstance}>
+      <button className="btn btn-primary" onClick={addInstance}>
         Add instance
       </button>
     </div>

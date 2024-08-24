@@ -1,9 +1,10 @@
 import React from "react";
 import { FaTrash, FaSearch } from "react-icons/fa";
 
-const ShowCourseDetails = () => {
-  const courses = [];
-
+const ShowCourseDetails = ({ courses }) => {
+  if (!courses || !Array.isArray(courses)) {
+    return <p>No courses available</p>;
+  }
   return (
     <div className="text-center">
       <button className="btn btn-primary mb-3 ">List courses</button>
@@ -16,8 +17,8 @@ const ShowCourseDetails = () => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, index) => (
-            <tr key={index}>
+          {courses.map((course) => (
+            <tr key={course.id}>
               <td>{course.title}</td>
               <td>{course.code}</td>
               <td>

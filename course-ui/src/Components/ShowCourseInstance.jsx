@@ -1,9 +1,10 @@
 import React from "react";
 import { FaTrash, FaSearch } from "react-icons/fa";
 
-const ShowCourseInstance = () => {
-  const instances = [];
-
+const ShowCourseInstance = ({ instances }) => {
+  if (!instances || !Array.isArray(instances)) {
+    return <p>No instances available</p>;
+  }
   return (
     <div>
       <div className="form-group d-flex mb-3">
@@ -23,8 +24,8 @@ const ShowCourseInstance = () => {
           </tr>
         </thead>
         <tbody>
-          {instances.map((instance, index) => (
-            <tr key={index}>
+          {instances.map((instance) => (
+            <tr key={instance.id}>
               <td>{instance.title}</td>
               <td>{instance.yearSem}</td>
               <td>{instance.code}</td>

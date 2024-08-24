@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const AddCourse = () => {
-  const [title, setTitle] = useState("");
-  const [code, setCode] = useState("");
-  const [description, setDescription] = useState("");
+const AddCourse = ({ addCourse }) => {
+  const [newCourse, setNewCourse] = useState({
+    title: "",
+    courseCode: "",
+    description: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCourse({ ...newCourse, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add course logic
+    addCourse(newCourse);
+    setNewCourse({
+      title: "",
+      courseCode: "",
+      description: "",
+    });
   };
-
   return (
     <form onSubmit={handleSubmit} className="mb-4">
       <div className="form-group">
@@ -17,24 +28,24 @@ const AddCourse = () => {
           type="text"
           className="form-control mb-2"
           placeholder="Course title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={newCourse.title}
+          onChange={handleInputChange}
         />
         <input
           type="text"
           className="form-control mb-2"
           placeholder="Course code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
+          value={newCourse.courseCode}
+          onChange={handleInputChange}
         />
         <input
           type="text"
           className="form-control mb-2"
           placeholder="Course description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={newCourse.description}
+          onChange={handleInputChange}
         />
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" onClick={addCourse} className="btn btn-primary">
           Add course
         </button>
       </div>
