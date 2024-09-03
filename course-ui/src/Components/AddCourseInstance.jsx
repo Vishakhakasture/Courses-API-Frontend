@@ -1,81 +1,84 @@
-import { useState } from "react";
-
-const AddCourseInstance = ({ addInstance }) => {
-  const courses = ["AI", "ML", "cloud"];
-  const [newInstance, setNewInstance] = useState({
+import React, { useState, useEffect } from "react";
+import axios from "../services/api";
+function AddCourseInstance() {
+  const [courses, setCourses] = useState([]);
+  const [instance, setInstance] = useState({
     courseId: "",
     year: "",
     semester: "",
   });
 
-  const semesters = ["Fall", "Spring", "Summer"];
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewInstance((prevInstance) => ({
-      ...prevInstance,
-      [name]: value,
-    }));
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get("/api/courses");
+        setCourses(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the courses!", error);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  const handleChange = (e) => {
+    setInstance({
+      ...instance,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addInstance(newInstance);
-    setNewInstance({
-      courseId: "",
-      year: "",
-      semester: "",
-    });
+    try {
+      await axios.post("/api/instances", instance);
+      alert("Course instance added successfully!");
+    } catch (error) {
+      console.error("There was an error adding the course instance!", error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="mb-4">
-      <div className="form-group d-flex">
+      <div className="mb-3">
         <select
           name="courseId"
-          className="form-control"
-          value={newInstance.courseId}
-          onChange={handleInputChange}
-          required
+          className="form-select"
+          value={instance.courseId}
+          onChange={handleChange}
         >
-          <option value="">Select a course</option>
-          {courses.map((course, index) => (
-            <option key={index} value={course.id}>
-              {course.title} ({course.courseCode})
+          <option value="">Select course</option>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title}
             </option>
           ))}
         </select>
-        <button className="btn btn-secondary">Refresh</button>
       </div>
-      <div className="form-group mt-2">
+      <div className="mb-3">
         <input
-          type="number"
+          type="text"
           name="year"
           className="form-control"
-          value={newInstance.year}
-          onChange={handleInputChange}
-          required
+          placeholder="Year"
+          value={instance.year}
+          onChange={handleChange}
         />
-
-        <select
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
           name="semester"
           className="form-control"
-          value={newInstance.semester}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="">Select a semester</option>
-          {semesters.map((semester, index) => (
-            <option key={index} value={semester}>
-              {semester}
-            </option>
-          ))}
-        </select>
+          placeholder="Semester"
+          value={instance.semester}
+          onChange={handleChange}
+        />
       </div>
-      <button className="btn btn-primary" onClick={addInstance}>
+      <button type="submit" className="btn btn-primary">
         Add instance
       </button>
     </form>
   );
-};
+}
 
 export default AddCourseInstance;

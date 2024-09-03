@@ -1,5 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  NavLink,
+} from "react-router-dom";
 import AddCourse from "./Components/AddCourse";
 import AddCourseInstance from "./Components/AddCourseInstance";
 import ShowCourseDetails from "./Components/ShowCourseDetails";
@@ -8,83 +14,76 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {
-  const [courses, setCourses] = useState([]);
-  const [instances, setInstances] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/api/courses");
-  //       if (!response.ok) throw new Error("Network response was not ok");
-  //       const data = await response.json();
-  //       setCourses(data || []);
-  //     } catch (error) {
-  //       console.error("Error fetching courses:", error);
-  //     }
-  //   };
-
-  //   fetchCourses();
-  // }, []);
-  // useEffect(() => {
-  //   const fetchInstances = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/api/courses");
-  //       if (!response.ok) throw new Error("Network response was not ok");
-  //       const data = await response.json();
-  //       setCourses(data || []);
-  //     } catch (error) {
-  //       console.error("Error fetching courses:", error);
-  //     }
-  //   };
-
-  //   fetchInstances();
-  // }, []);
-
-  const addCourse = async (course) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/courses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(course),
-      });
-      if (response.ok) {
-        const newCourse = await response.json();
-        setCourses([...courses, newCourse]);
-      }
-    } catch (error) {
-      console.error("Error adding course:", error);
-    }
-  };
-
-  const addInstance = async (instance) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/instances", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(instance),
-      });
-      if (response.ok) {
-        const newInstance = await response.json();
-        setInstances([...instances, newInstance]);
-      }
-    } catch (error) {
-      console.error("Error adding instance:", error);
-    }
-  };
-
   return (
-    <div className="container">
-      <h3 className="my-4">Courses and Course Instances Management</h3>
+    <Router>
+      <div className="container mt-4">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
+          <Link className="navbar-brand" to="/">
+            Course Management
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <NavLink
+                  exact
+                  to="/add-course"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  Add Course
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/add-instance"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  Add Instance
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/show-courses"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  Show Courses
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/show-instances"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  Show Instances
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </nav>
 
-      <h4>Course</h4>
-      <AddCourse addCourse={addCourse} />
-      <h4>Instance</h4>
-      <AddCourseInstance courses={courses} />
-      <h4>Course List</h4>
-      <ShowCourseDetails addInstance={addInstance} />
-      <h4>Instance List</h4>
-      <ShowCourseInstance instances={instances} />
-    </div>
+        <Routes>
+          <Route path="/add-course" element={<AddCourse />} />
+          <Route path="/add-instance" element={<AddCourseInstance />} />
+          <Route path="/show-courses" element={<ShowCourseDetails />} />
+          <Route path="/show-instances" element={<ShowCourseInstance />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
+
 export default App;

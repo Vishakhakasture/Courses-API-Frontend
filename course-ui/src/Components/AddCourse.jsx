@@ -1,56 +1,67 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "../services/api";
 
-const AddCourse = ({ addCourse }) => {
-  const [newCourse, setNewCourse] = useState({
+function AddCourse() {
+  const [course, setCourse] = useState({
     title: "",
-    courseCode: "",
+    code: "",
     description: "",
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewCourse({ ...newCourse, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addCourse(newCourse);
-    setNewCourse({
-      title: "",
-      courseCode: "",
-      description: "",
+  const handleChange = (e) => {
+    setCourse({
+      ...course,
+      [e.target.name]: e.target.value,
     });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/api/courses", course);
+      alert("Course added successfully!");
+    } catch (error) {
+      console.error("There was an error adding the course!", error);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mb-4">
-      <div className="form-group">
+      <div className="mb-3">
         <input
-          name="courseTitle"
-          className="form-control mb-2"
+          type="text"
+          name="title"
+          className="form-control"
           placeholder="Course title"
-          // value={newCourse.title}
-          onChange={handleInputChange}
+          value={course.title}
+          onChange={handleChange}
         />
-        <input
-          name="courseCode"
-          className="form-control mb-2"
-          placeholder="Course code"
-          // value={newCourse.courseCode}
-          onChange={handleInputChange}
-        />
-        <input
-          name="courseDescription"
-          className="form-control mb-2"
-          placeholder="Course description"
-          // value={newCourse.description}
-          onChange={handleInputChange}
-        />
-        <button type="submit" onClick={addCourse} className="btn btn-primary">
-          Add course
-        </button>
       </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          name="code"
+          className="form-control"
+          placeholder="Course code"
+          value={course.code}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          type="text"
+          name="description"
+          className="form-control"
+          placeholder="Course description"
+          value={course.description}
+          onChange={handleChange}
+        />
+      </div>
+      <button type="submit" className="btn btn-primary">
+        Add course
+      </button>
     </form>
   );
-};
+}
 
 export default AddCourse;
