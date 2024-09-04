@@ -5,21 +5,16 @@ import axios from "../services/api";
 function ShowCourseDetails() {
   const [courses, setCourses] = useState([]);
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get("/api/courses");
-        setCourses(response.data);
-      } catch (error) {
-        console.error("There was an error fetching the courses!", error);
-      }
-    };
-    fetchCourses();
-  }, []);
+  const fetchCourses = () => {
+    axios
+      .get("/course")
+      .then((response) => setCourses(response.data))
+      .catch((error) => console.error("Error fetching courses:", error));
+  };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/courses/${id}`);
+      await axios.delete(`/course/delete/${id}`);
       setCourses(courses.filter((course) => course.id !== id));
       alert("Course deleted successfully!");
     } catch (error) {
@@ -29,12 +24,15 @@ function ShowCourseDetails() {
 
   return (
     <div>
-      <button className="btn btn-primary mb-3">List courses</button>
+      <button className="btn btn-primary mb-3" onClick={fetchCourses}>
+        List courses
+      </button>
       <table className="table table-striped">
         <thead>
           <tr>
             <th className="bg-primary text-white">Course Title</th>
             <th className="bg-primary text-white">Course code</th>
+            <th className="bg-primary text-white">Course description</th>
             <th className="bg-primary text-white">Action</th>
           </tr>
         </thead>
@@ -42,10 +40,15 @@ function ShowCourseDetails() {
           {courses.map((course) => (
             <tr key={course.id}>
               <td>{course.title}</td>
-              <td>{course.code}</td>
+              <td>{course.course_code}</td>
+              <td>{course.description}</td>
               <td>
                 <button className="btn btn-secondary me-2">
-                  <FaSearch />
+                  <FaSearch
+                    style={{
+                      color: "white",
+                    }}
+                  />
                 </button>
                 <button
                   className="btn btn-danger"

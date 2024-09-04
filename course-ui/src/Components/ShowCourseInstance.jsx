@@ -3,39 +3,32 @@ import { FaTrash, FaSearch } from "react-icons/fa";
 import axios from "../services/api";
 
 function ShowCourseInstance() {
+  const [years, setYears] = useState([]);
+  const [semesters, setSemesters] = useState([]);
   const [instances, setInstances] = useState([]);
-  const [filters, setFilters] = useState({
-    year: "",
-    semester: "",
-  });
-
-  const handleChange = (e) => {
-    setFilters({
-      ...filters,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const fetchInstances = async () => {
-    try {
-      const response = await axios.get(
-        `/api/instances/${filters.year}/${filters.semester}`
-      );
-      setInstances(response.data);
-    } catch (error) {
-      console.error("There was an error fetching the instances!", error);
-    }
-  };
 
   useEffect(() => {
-    fetchInstances();
+    axios
+      .get("/instance/years")
+      .then((response) => setYears(response.data))
+      .catch((error) => console.error("Error fetching years:", error));
+
+    axios
+      .get("/instance/semesters")
+      .then((response) => setSemesters(response.data))
+      .catch((error) => console.error("Error fetching semesters:", error));
   }, []);
+
+  const fetchInstances = () => {
+    axios
+      .get("/instance")
+      .then((response) => setInstances(response.data))
+      .catch((error) => console.error("Error fetching instances:", error));
+  };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `/api/instances/${filters.year}/${filters.semester}/${id}`
-      );
+      await axios.delete(`/instance/delete/${id}`);
       setInstances(instances.filter((instance) => instance.id !== id));
       alert("Instance deleted successfully!");
     } catch (error) {
@@ -46,23 +39,21 @@ function ShowCourseInstance() {
   return (
     <div>
       <div className="mb-3">
-        <select
-          name="year"
-          className="form-select"
-          value={filters.year}
-          onChange={handleChange}
-        >
-          <option value="">Select year</option>
+        <select id="year" name="year">
+          {years.map((year, index) => (
+            <option key={index} value={year}>
+              {year}
+            </option>
+          ))}
         </select>
       </div>
       <div className="mb-3">
-        <select
-          name="semester"
-          className="form-select"
-          value={filters.semester}
-          onChange={handleChange}
-        >
-          <option value="">Select semester</option>
+        <select id="semester" name="semester">
+          {semesters.map((semester, index) => (
+            <option key={index} value={semester}>
+              {semester}
+            </option>
+          ))}
         </select>
       </div>
       <button className="btn btn-primary mb-3" onClick={fetchInstances}>

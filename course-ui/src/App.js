@@ -36,10 +36,10 @@ function App() {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <NavLink
-                  exact
+                  exact="true"
                   to="/add-course"
                   className="nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Add Course
                 </NavLink>
@@ -48,7 +48,7 @@ function App() {
                 <NavLink
                   to="/add-instance"
                   className="nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Add Instance
                 </NavLink>
@@ -57,7 +57,7 @@ function App() {
                 <NavLink
                   to="/show-courses"
                   className="nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Show Courses
                 </NavLink>
@@ -66,7 +66,7 @@ function App() {
                 <NavLink
                   to="/show-instances"
                   className="nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Show Instances
                 </NavLink>

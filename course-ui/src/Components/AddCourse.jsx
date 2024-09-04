@@ -18,7 +18,7 @@ function AddCourse() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/courses", course);
+      await axios.post("/course/add", course);
       alert("Course added successfully!");
     } catch (error) {
       console.error("There was an error adding the course!", error);
