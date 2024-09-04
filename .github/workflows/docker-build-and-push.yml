@@ -35,5 +35,5 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t your-dockerhub-username/course-api-react:latest .
-        docker push your-dockerhub-username/course-api-react:latest
+        docker build -t vishakha103/course-api-react:latest .
+        docker push vishakha103/course-api-react:latest
