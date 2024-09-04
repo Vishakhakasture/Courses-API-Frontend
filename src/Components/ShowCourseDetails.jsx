@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaTrash, FaSearch } from "react-icons/fa";
 import axios from "../services/api";
 
