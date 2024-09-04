@@ -3,7 +3,10 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - main  # Change this if you're using a different branch
+
+  # This allows you to manually trigger the workflow
+  workflow_dispatch: 
 
 jobs:
   build-and-push:
@@ -34,4 +37,3 @@ jobs:
       run: |
         docker build -t your-dockerhub-username/course-api-react:latest .
         docker push your-dockerhub-username/course-api-react:latest
-
